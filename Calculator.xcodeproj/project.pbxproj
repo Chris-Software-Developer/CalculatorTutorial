@@ -55,13 +55,37 @@
 			isa = PBXGroup;
 			children = (
 				0DE4F23A1FC52AA70089C275 /* AppDelegate.swift */,
-				0DE4F23C1FC52AA70089C275 /* ViewController.swift */,
-				0DE4F23E1FC52AA70089C275 /* Main.storyboard */,
-				0DE4F2411FC52AA70089C275 /* Assets.xcassets */,
-				0DE4F2431FC52AA70089C275 /* LaunchScreen.storyboard */,
+				0DE4F24E1FC52AC70089C275 /* Models */,
+				0DE4F24D1FC52AC10089C275 /* Views */,
+				0DE4F24C1FC52ABD0089C275 /* Controllers */,
 				0DE4F2461FC52AA70089C275 /* Info.plist */,
 			);
 			path = Calculator;
+			sourceTree = "<group>";
+		};
+		0DE4F24C1FC52ABD0089C275 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0DE4F23C1FC52AA70089C275 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		0DE4F24D1FC52AC10089C275 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0DE4F23E1FC52AA70089C275 /* Main.storyboard */,
+				0DE4F2431FC52AA70089C275 /* LaunchScreen.storyboard */,
+				0DE4F2411FC52AA70089C275 /* Assets.xcassets */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0DE4F24E1FC52AC70089C275 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,6 +299,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DF9NTXN425;
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Chris.Smith.Calculator;
@@ -289,6 +314,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DF9NTXN425;
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Chris.Smith.Calculator;
