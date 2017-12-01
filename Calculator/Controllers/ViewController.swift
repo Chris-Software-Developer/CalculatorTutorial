@@ -49,7 +49,11 @@ class ViewController: UIViewController {
     
     @IBAction func decimalButtonPressed(_ sender: UIButton) {
         
-        self.resultsLabel.text = "0" + ""
+        if self.resultsLabel.text == "0" || self.resultsLabel.text == "" {
+            self.resultsLabel.text = "0" + ""} else {
+            self.resultsLabel.text = self.resultsLabel.text! + ""
+        }
+        
         self.playNumberSoundEffect()
         self.handleNumberPressed(sender)
         self.decimalButton.isEnabled = false
