@@ -138,7 +138,7 @@ class ViewController: UIViewController {
     // MARK: - Convenience Methods
     
     func handleNumberPressed(_ sender: UIButton) {
-                
+        
         if self.resultsLabel.text == "0" {
             if sender.titleLabel?.text == "." {
                 self.resultsLabel.text = "0"
@@ -149,7 +149,10 @@ class ViewController: UIViewController {
         }
         
         if self.operatorJustPressed == true {
-            self.resultsLabel.text = ""
+            if sender.titleLabel?.text == "." {
+                self.resultsLabel.text = "0" + ""
+            } else {
+                self.resultsLabel.text = "" }
             operatorJustPressed = false
         }
         
