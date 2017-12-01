@@ -335,8 +335,14 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="addButton" destination="ZXO-1y-oS0" id="zDk-sv-xnI"/>
                         <outlet property="decimalButton" destination="4WZ-oG-5DW" id="2mj-Uh-x7j"/>
+                        <outlet property="divisionButton" destination="0sI-qX-GB2" id="lm5-Pm-7ux"/>
+                        <outlet property="equalsButton" destination="EIA-fZ-FKG" id="CU6-Ki-teJ"/>
+                        <outlet property="minusButton" destination="Esb-MN-XXe" id="pXK-5e-kXj"/>
+                        <outlet property="multiplicationButton" destination="oOq-b7-3s9" id="WYa-KR-Rkx"/>
                         <outlet property="resultsLabel" destination="kw6-9Q-vcD" id="Hor-J9-laL"/>
+                        <outlet property="zeroButton" destination="Lfi-9x-adc" id="EYn-6f-GTF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
