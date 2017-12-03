@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     var numberSoundEffect: AVAudioPlayer?
     var operationSoundEffect: AVAudioPlayer?
     
+    let numberFormatter = NumberFormatter()
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var resultsLabel: UILabel!
@@ -67,6 +69,7 @@ class ViewController: UIViewController {
         
         self.playNumberSoundEffect()
         self.handleNumberPressed(sender)
+        self.formatNumber()
         
         if resultsLabel.text != "0" {
             self.zeroButton.isEnabled = true
@@ -93,6 +96,8 @@ class ViewController: UIViewController {
     
     @IBAction func percentageButtonPressed(_ sender: UIButton) {
         
+        self.resultsLabel.text = self.resultsLabel.text?.replacingOccurrences(of: ",", with: "")
+        
         if self.resultsLabel.text != "" {
             self.playOperationSoundEffect()
         }
@@ -106,10 +111,13 @@ class ViewController: UIViewController {
         
         let result = value * 0.01
         self.resultsLabel.text = String(result)
+        self.formatNumber()
     }
     
     @IBAction func positiveNegativeButtonPressed(_ sender: UIButton) {
         
+        self.resultsLabel.text = self.resultsLabel.text?.replacingOccurrences(of: ",", with: "")
+
         if self.resultsLabel.text != "" {
             self.playOperationSoundEffect()
         }
@@ -123,6 +131,7 @@ class ViewController: UIViewController {
         
         let result = value * -1
         self.resultsLabel.text = result.isWholeNumber ? "\(Int(result))" : "\(result)"
+        self.formatNumber()
     }
     
     // MARK: - View Lifecycle
@@ -136,6 +145,22 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Convenience Methods
+    
+    func formatNumber() {
+        
+        self.resultsLabel.text = self.resultsLabel.text?.replacingOccurrences(of: ",", with: "")
+
+        guard
+            let labelText = self.resultsLabel.text,
+            let labelTextDouble = Double(labelText) else {
+                return
+        }
+        
+        self.numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        let formattedNumber = numberFormatter.string(from: NSNumber(value: labelTextDouble))
+        
+        self.resultsLabel.text = formattedNumber
+    }
     
     func handleNumberPressed(_ sender: UIButton) {
         
@@ -287,13 +312,6 @@ class ViewController: UIViewController {
             self.operationSoundEffect!.play()
         } catch {
             print("Failed to instantiate audio player. Error: \(error.localizedDescription)")
-        }
-    }
-    
-    func formatNumber() {
-        
-        if let value = self.value1 {
-            NumberFormatter.localizedString(from: NSNumber(value: value), number: NumberFormatter.Style.decimal)
         }
     }
 }
