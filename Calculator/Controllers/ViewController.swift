@@ -69,8 +69,8 @@ class ViewController: UIViewController {
         
         self.playNumberSoundEffect()
         self.handleNumberPressed(sender)
-        self.formatNumber()
-        
+        self.updateCommasInResultsLabel()
+      
         if resultsLabel.text != "0" {
             self.zeroButton.isEnabled = true
         }
@@ -111,13 +111,13 @@ class ViewController: UIViewController {
         
         let result = value * 0.01
         self.resultsLabel.text = String(result)
-        self.formatNumber()
+        self.updateCommasInResultsLabel()
     }
     
     @IBAction func positiveNegativeButtonPressed(_ sender: UIButton) {
         
         self.resultsLabel.text = self.resultsLabel.text?.replacingOccurrences(of: ",", with: "")
-
+        
         if self.resultsLabel.text != "" {
             self.playOperationSoundEffect()
         }
@@ -131,7 +131,7 @@ class ViewController: UIViewController {
         
         let result = value * -1
         self.resultsLabel.text = result.isWholeNumber ? "\(Int(result))" : "\(result)"
-        self.formatNumber()
+        self.updateCommasInResultsLabel()
     }
     
     // MARK: - View Lifecycle
@@ -146,20 +146,23 @@ class ViewController: UIViewController {
     
     // MARK: - Convenience Methods
     
-    func formatNumber() {
+    func updateNumberCommas(inString string: String) -> String? {
         
-        self.resultsLabel.text = self.resultsLabel.text?.replacingOccurrences(of: ",", with: "")
-
-        guard
-            let labelText = self.resultsLabel.text,
-            let labelTextDouble = Double(labelText) else {
-                return
+        // Remove any possibly existing commas for new number (to avoid misplacement of commas for new number).
+        
+        let noCommasString = string.replacingOccurrences(of: ",", with: "")
+        
+        guard let numberDouble = Double(noCommasString) else {
+            print("Couldn't convert string: \(string) to type of Double.")
+            return nil
         }
         
-        self.numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        let formattedNumber = numberFormatter.string(from: NSNumber(value: labelTextDouble))
+        // Add commas for new number.
         
-        self.resultsLabel.text = formattedNumber
+        self.numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        let formattedNumber = numberFormatter.string(from: NSNumber(value: numberDouble))
+
+        return formattedNumber
     }
     
     func handleNumberPressed(_ sender: UIButton) {
@@ -191,9 +194,12 @@ class ViewController: UIViewController {
         self.decimalButton.isEnabled = true
         self.operatorJustPressed = true
         
+        // Remove commas.
+        
         guard
             let labelText = self.resultsLabel.text,
             let value = Double(labelText) else {
+                print("Failed to turn string: \(String(describing: self.resultsLabel.text)) into type Double.")
                 return
         }
         
@@ -233,6 +239,8 @@ class ViewController: UIViewController {
             default :
                 break
             }
+            
+            self.resultsLabel.text = self.resultsLabel.text?.replacingOccurrences(of: ",", with: "")
             
             if let result = result {
                 self.value1 = result
@@ -312,6 +320,15 @@ class ViewController: UIViewController {
             self.operationSoundEffect!.play()
         } catch {
             print("Failed to instantiate audio player. Error: \(error.localizedDescription)")
+        }
+    }
+    
+    func updateCommasInResultsLabel() {
+        
+        if let text = self.resultsLabel.text {
+            if let updatedString = self.updateNumberCommas(inString: text) {
+                self.resultsLabel.text = updatedString
+            }
         }
     }
 }
