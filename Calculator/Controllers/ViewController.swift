@@ -195,11 +195,15 @@ class ViewController: UIViewController {
         self.operatorJustPressed = true
         
         // Remove commas.
+        guard let text = self.resultsLabel.text else {
+            print("Couldn't get text from results label")
+            return
+        }
         
-        guard
-            let labelText = self.resultsLabel.text,
-            let value = Double(labelText) else {
-                print("Failed to turn string: \(String(describing: self.resultsLabel.text)) into type Double.")
+        let numberNoCommas = text.replacingOccurrences(of: ",", with: "")
+        
+        guard let value = Double(numberNoCommas) else {
+                print("Failed to turn string: \(numberNoCommas) into type Double.")
                 return
         }
         
@@ -214,27 +218,28 @@ class ViewController: UIViewController {
             
             guard
                 let value1 = self.value1,
-                let value2String = self.resultsLabel.text,
-                let value2 = Double(value2String),
                 let previouslySelectedOperator = self.currentlySelectedOperator else {
                     fatalError("Error")
             }
+                        
+            // Storing value in a more descriptive name for operations for readability.
+            let labelValue = value
             
             var result: Double?
             
             switch previouslySelectedOperator {
                 
             case "+" :
-                result = value1 + value2
+                result = value1 + labelValue
                 
             case "-" :
-                result = value1 - value2
+                result = value1 - labelValue
                 
             case "×" :
-                result = value1 * value2
+                result = value1 * labelValue
                 
             case "÷" :
-                result = value1 / value2
+                result = value1 / labelValue
                 
             default :
                 break
@@ -244,7 +249,11 @@ class ViewController: UIViewController {
             
             if let result = result {
                 self.value1 = result
-                self.resultsLabel.text = result.isWholeNumber ? "\(Int(result))" : "\(result)"
+                let resultStringNoCommas = result.isWholeNumber ? "\(Int(result))" : "\(result)"
+                guard let resultStringWithCommas = self.updateNumberCommas(inString: resultStringNoCommas) else {
+                    fatalError("Error: Could not update commas from string \(resultStringNoCommas)")
+                }
+                self.resultsLabel.text = resultStringWithCommas
             }
         }
         
