@@ -24,6 +24,11 @@ class ViewController: UIViewController {
     
     let numberFormatter = NumberFormatter()
     
+    var addButtonPressed: Bool = false
+    var minusButtonPressed: Bool = false
+    var multiplyButtonPressed: Bool = false
+    var divisionButtonPressed: Bool = false
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var resultsLabel: UILabel!
@@ -70,7 +75,7 @@ class ViewController: UIViewController {
         self.playNumberSoundEffect()
         self.handleNumberPressed(sender)
         self.updateCommasInResultsLabel()
-      
+        
         if resultsLabel.text != "0" {
             self.zeroButton.isEnabled = true
         }
@@ -146,25 +151,6 @@ class ViewController: UIViewController {
     
     // MARK: - Convenience Methods
     
-    func updateNumberCommas(inString string: String) -> String? {
-        
-        // Remove any possibly existing commas for new number (to avoid misplacement of commas for new number).
-        
-        let noCommasString = string.replacingOccurrences(of: ",", with: "")
-        
-        guard let numberDouble = Double(noCommasString) else {
-            print("Couldn't convert string: \(string) to type of Double.")
-            return nil
-        }
-        
-        // Add commas for new number.
-        
-        self.numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        let formattedNumber = numberFormatter.string(from: NSNumber(value: numberDouble))
-
-        return formattedNumber
-    }
-    
     func handleNumberPressed(_ sender: UIButton) {
         
         if self.resultsLabel.text == "0" {
@@ -195,16 +181,17 @@ class ViewController: UIViewController {
         self.operatorJustPressed = true
         
         // Remove commas.
+        
         guard let text = self.resultsLabel.text else {
-            print("Couldn't get text from results label")
+            print("Couldn't get text from results label.")
             return
         }
         
         let numberNoCommas = text.replacingOccurrences(of: ",", with: "")
         
         guard let value = Double(numberNoCommas) else {
-                print("Failed to turn string: \(numberNoCommas) into type Double.")
-                return
+            print("Failed to turn string: \(numberNoCommas) into type Double.")
+            return
         }
         
         if self.currentlySelectedOperator == nil && self.value1 == nil {
@@ -221,8 +208,9 @@ class ViewController: UIViewController {
                 let previouslySelectedOperator = self.currentlySelectedOperator else {
                     fatalError("Error")
             }
-                        
+            
             // Storing value in a more descriptive name for operations for readability.
+            
             let labelValue = value
             
             var result: Double?
@@ -231,19 +219,25 @@ class ViewController: UIViewController {
                 
             case "+" :
                 result = value1 + labelValue
+                self.addButtonPressed = true
                 
             case "-" :
                 result = value1 - labelValue
+                self.minusButtonPressed = true
                 
             case "×" :
                 result = value1 * labelValue
+                self.multiplyButtonPressed = true
                 
             case "÷" :
                 result = value1 / labelValue
+                self.divisionButtonPressed = true
                 
             default :
                 break
             }
+            
+            self.highlightButtonPressed()
             
             self.resultsLabel.text = self.resultsLabel.text?.replacingOccurrences(of: ",", with: "")
             
@@ -266,6 +260,43 @@ class ViewController: UIViewController {
             
         else {
             currentlySelectedOperator = operation
+        }
+        
+        self.resetButtonPressedStatus()
+    }
+    
+    func resetButtonPressedStatus() {
+        
+        self.addButtonPressed = false
+        self.minusButtonPressed = false
+        self.multiplyButtonPressed = false
+        self.divisionButtonPressed = false
+    }
+    
+    func highlightButtonPressed() {
+        
+        if self.addButtonPressed == true {
+            self.addButton.backgroundColor = .white
+        } else {
+            print("Error, could not change addButton background color")
+        }
+        
+        if self.minusButtonPressed == true {
+            self.minusButton.backgroundColor = .white
+        } else {
+            print("Error, could not change minusButton background color")
+        }
+        
+        if self.multiplyButtonPressed == true {
+            self.multiplicationButton.backgroundColor = .white
+        } else {
+            print("Error, could not change multiplicationButton background color")
+        }
+        
+        if self.divisionButtonPressed == true {
+            self.divisionButton.backgroundColor = .white
+        } else {
+            print("Error, could not change divisionButton background color")
         }
     }
     
@@ -339,5 +370,24 @@ class ViewController: UIViewController {
                 self.resultsLabel.text = updatedString
             }
         }
+    }
+    
+    func updateNumberCommas(inString string: String) -> String? {
+        
+        // Remove any possibly existing commas for new number (to avoid misplacement of commas for new number).
+        
+        let noCommasString = string.replacingOccurrences(of: ",", with: "")
+        
+        guard let numberDouble = Double(noCommasString) else {
+            print("Couldn't convert string: \(string) to type of Double.")
+            return nil
+        }
+        
+        // Add commas for new number.
+        
+        self.numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        let formattedNumber = numberFormatter.string(from: NSNumber(value: numberDouble))
+        
+        return formattedNumber
     }
 }
