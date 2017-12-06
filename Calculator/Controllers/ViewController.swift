@@ -180,6 +180,24 @@ class ViewController: UIViewController {
         self.decimalButton.isEnabled = true
         self.operatorJustPressed = true
         
+        if operation == "+" {
+            self.addButtonPressed = true
+        }
+        
+        if operation == "-" {
+            self.minusButtonPressed = true
+        }
+        
+        if operation == "×" {
+            self.multiplyButtonPressed = true
+        }
+        
+        if operation == "÷" {
+            self.divisionButtonPressed = true
+        }
+        
+        self.highlightButtonPressed()
+        
         // Remove commas.
         
         guard let text = self.resultsLabel.text else {
@@ -219,25 +237,19 @@ class ViewController: UIViewController {
                 
             case "+" :
                 result = value1 + labelValue
-                self.addButtonPressed = true
                 
             case "-" :
                 result = value1 - labelValue
-                self.minusButtonPressed = true
                 
             case "×" :
                 result = value1 * labelValue
-                self.multiplyButtonPressed = true
                 
             case "÷" :
                 result = value1 / labelValue
-                self.divisionButtonPressed = true
                 
             default :
                 break
             }
-            
-            self.highlightButtonPressed()
             
             self.resultsLabel.text = self.resultsLabel.text?.replacingOccurrences(of: ",", with: "")
             
@@ -262,7 +274,21 @@ class ViewController: UIViewController {
             currentlySelectedOperator = operation
         }
         
-        self.resetButtonPressedStatus()
+         self.resetButtonPressedStatus()
+         self.returnButtonsToNormal()
+    }
+    
+    func returnButtonsToNormal() {
+        
+        self.addButton.backgroundColor = .orange
+        self.minusButton.backgroundColor = .orange
+        self.multiplicationButton.backgroundColor = .orange
+        self.divisionButton.backgroundColor = .orange
+        
+        self.addButton.setTitleColor(.white, for: .normal)
+        self.minusButton.setTitleColor(.white, for: .normal)
+        self.multiplicationButton.setTitleColor(.white, for: .normal)
+        self.divisionButton.setTitleColor(.white, for: .normal)
     }
     
     func resetButtonPressedStatus() {
@@ -277,26 +303,22 @@ class ViewController: UIViewController {
         
         if self.addButtonPressed == true {
             self.addButton.backgroundColor = .white
-        } else {
-            print("Error, could not change addButton background color")
+            self.addButton.setTitleColor(.black, for: .normal)
         }
         
         if self.minusButtonPressed == true {
             self.minusButton.backgroundColor = .white
-        } else {
-            print("Error, could not change minusButton background color")
+            self.minusButton.setTitleColor(.black, for: .normal)
         }
         
         if self.multiplyButtonPressed == true {
             self.multiplicationButton.backgroundColor = .white
-        } else {
-            print("Error, could not change multiplicationButton background color")
+            self.multiplicationButton.setTitleColor(.black, for: .normal)
         }
         
         if self.divisionButtonPressed == true {
             self.divisionButton.backgroundColor = .white
-        } else {
-            print("Error, could not change divisionButton background color")
+            self.divisionButton.setTitleColor(.black, for: .normal)
         }
     }
     
